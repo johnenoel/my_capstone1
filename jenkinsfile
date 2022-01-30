@@ -22,12 +22,13 @@ pipeline {
                sh "scp -o StrictHostKeyChecking=no gowebapp-service.yaml ec2-user@54.204.128.29:/home/ec2-user"
                sh "scp -o StrictHostKeyChecking=no k8s-service.yml ec2-user@54.204.128.29:/home/ec2-user"
                sh "scp -o StrictHostKeyChecking=no k8s-deploy.yml ec2-user@54.204.128.29:/home/ec2-user"
+               sh "scp -o StrictHostKeyChecking=no minikube.yml ec2-user@54.204.128.29:/home/ec2-user"
+               sh "scp -o StrictHostKeyChecking=no k8s-info.yml ec2-user@54.204.128.29:/home/ec2-user"
                }
          }       
          stage('Start minikube process') {
                steps {
-               sh 'ssh ec2-user@54.204.128.29 minikube start --vm-driver=none'
-               sh 'logout'    
+               sh 'ansible-playbook /home/ec2-user/minikube.yml'
                }
          }         
          stage('Making the deployment now') {
@@ -38,9 +39,7 @@ pipeline {
          }
          stage('Listing my deployments, pods and service') {
                steps {
-               sh 'ssh ec2-user@54.204.128.29 kubectl get all'
-               sh 'minikube service my-goweb-service'
-               sh 'logout'
+               sh 'ansible-playbook /home/ec2-user/k8s-info.yml'
                }
          }
          stage('Testing') {
