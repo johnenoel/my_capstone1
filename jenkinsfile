@@ -26,7 +26,8 @@ pipeline {
          }       
          stage('Start minikube process') {
                steps {
-               sh 'ssh ec2-user@54.204.128.29 sudo -E minikube start --vm-driver=none'
+               sh 'ssh ec2-user@54.204.128.29'
+               sh 'minikube start --vm-driver=none'
                sh 'logout'    
                }
          }         
