@@ -16,11 +16,38 @@ pipeline {
                sh 'docker push johnenoel/capstone_image'
                }
          }
+         Stage('copy the deployment & service files') {
+               steps {
+               sh "scp -o StrictHostKeyChecking=no gowebapp-deployment.yaml ec2-user@54.204.128.29:/home/ec2-user"
+               sh "scp -o StrictHostKeyChecking=no gowebapp-service.yaml ec2-user@54.204.128.29:/home/ec2-user"
+               sh "scp -o StrictHostKeyChecking=no k8s-service.yml ec2-user@54.204.128.29:/home/ec2-user"
+               sh "scp -o StrictHostKeyChecking=no k8s-deploy.yml ec2-user@54.204.128.29:/home/ec2-user"
+               }
+         }       
+         stage('Starting minikube') {
+               steps {
+               sh 'ssh ec2-user@54.204.128.29 minikube start --vm-driver=none'
+               sh 'logout'    
+               }
+         }         
+         stage('Making the deployment now') {
+               steps {
+               sh 'ansible-playbook k8s-deploy.yml'
+               sh 'ansible-playbook k8s-service.yml'
+               }
+         }
+         stage('Checking my deployments, pods and service') {
+               steps {
+               sh 'ssh ec2-user@54.204.128.29 kubectl get all'
+               sh 'minikube service my-goweb-service'
+               sh 'logout
+               }
+         }
          stage('Testing') {
               steps {
                     echo 'Testing...'
                     }
          }
-}
+    }
 }
 
