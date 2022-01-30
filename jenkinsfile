@@ -28,7 +28,13 @@ pipeline {
          }       
          stage('Start minikube process') {
                steps {
+<<<<<<< HEAD
                sh 'ansible-playbook /home/ec2-user/minikube.yml'
+=======
+               sh 'ssh ec2-user@54.204.128.29'
+               sh 'minikube start --vm-driver=none'
+               sh 'logout'    
+>>>>>>> 6d7751b8550c0f360bc842a077360b6f4831b6d1
                }
          }         
          stage('Making the deployment now') {
