@@ -40,7 +40,7 @@ pipeline {
                steps {
                sh 'ssh ec2-user@54.204.128.29 kubectl get all'
                sh 'minikube service my-goweb-service'
-               sh 'logout
+               sh 'logout'
                }
          }
          stage('Testing') {
