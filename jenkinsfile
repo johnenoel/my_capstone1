@@ -24,11 +24,6 @@ pipeline {
                sh "scp -o StrictHostKeyChecking=no k8s-deploy.yml ec2-user@54.204.128.29:/home/ec2-user"
                }
          } 
-         stage('Start the minikube service') {
-               steps {
-               sh 'ssh ec2-user@54.204.128.29 minikube start --vm-driver=none'
-               }
-         }
          stage('Make the deployment now') {
                steps {
                sh 'ansible-playbook k8s-deploy.yml'
