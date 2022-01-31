@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: my-goweb-app
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       name: my-goweb-app
